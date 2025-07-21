@@ -61,4 +61,4 @@ tabela_juntada1 <- na.omit(tabela_juntada)
 
 #Saving the results
 library(openxlsx)
-write.table(tabela_juntada1, "resultado_final.csv", sep = "\t", row.names = FALSE)
+write.table(tabela_juntada1, "final_result.csv", sep = "\t", row.names = FALSE)
