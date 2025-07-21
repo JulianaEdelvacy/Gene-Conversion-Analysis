@@ -12,19 +12,19 @@ def ver_qualidade (R1_tamanho_id, R2_tamanho_id ,R1_seqs, R2_seqs, assemble_ids,
     seq_ref = assemble_ids[i].seq
     seq_len = len(assemble_ids[i].letter_annotations["phred_quality"])
     
-    #FAZENDO ALINHAMENTO SEQ_R1
+    #ALIGNING SEQ_R1
 
-    index_temp = R1_tamanho_id.index(id_geral) #Pega o index do ID da sequência do assemble na lista de IDs do R1
+    index_temp = R1_tamanho_id.index(id_geral) #Get the index of the assembly's sequence ID from R1's list of IDs
     alinhamento_R1_teste = pairwise2.align.localxx(R1_seqs[index_temp], seq_ref[0:len(R1_seqs[index_temp])])
     if len(alinhamento_R1_teste) == 0:
         return 0
     alinhamento_R1_assemble_local = alinhamento_R1_teste[0]
     R1_len = len(R1_seqs[index_temp])
     
-    #FAZENDO ALINHAMENTO SEQ_R2
+    #ALIGNING SEQ_R2
     
-    index_temp = R2_tamanho_id.index(id_geral) #Pega o index do ID da sequência do assemble na lista de IDs do R1
-    R2_ini = len(seq_ref)-len(R2_seqs[index_temp]) #Índice de início provável do R2 no assemble
+    index_temp = R2_tamanho_id.index(id_geral) #Get the index of the assembly's sequence ID from R1's list of IDs
+    R2_ini = len(seq_ref)-len(R2_seqs[index_temp]) #Index of probable start of R2 in the assembly
     seq_aln_R2 = seq_ref[R2_ini:seq_len]
     alinhamento_R2_teste = pairwise2.align.localxx(R2_seqs[index_temp].reverse_complement(), seq_aln_R2)    
     if len(alinhamento_R2_teste) == 0:
@@ -35,27 +35,26 @@ def ver_qualidade (R1_tamanho_id, R2_tamanho_id ,R1_seqs, R2_seqs, assemble_ids,
     interreads = range((seq_len-R2_len),R1_len)
     
     '''
-    Condições:
-        Regiao sem gap é MAIOR ou igual ao início da região de interssecção das reads:
-            Utiliza-se a região anterior à intersecção como inicial
-            Se tem um gap no começo joga fora.
+    Conditions:
+        The region without a gap is GREATER than or equal to the start of the region where the reads intersect:
+            The region before the intersection is used as the starting point. If there is a gap at the beginning, discard it.
         
-        Regiao sem gap é MENOR que o início da região de interssecção das reads:
-            Utiliza-se a região sem gap como inicial
+        Region without a gap is LESS than the start of the region where the reads intersect:
+            The region without a gap is used as the starting point
         
     '''
     
-    R1_no_gap = alinhamento_R1_assemble_local[0].split("-")[0] #região do R1 que alinha com assemble sem gaps
+    R1_no_gap = alinhamento_R1_assemble_local[0].split("-")[0] #region of R1 that aligns with assembly without gaps
     if (len(R1_no_gap) -1) not in interreads:
         return None
-    R2_no_gap = alinhamento_R2_assemble_local[0].split("-")[-1] #região do R2 que alinha com assemble sem gaps
+    R2_no_gap = alinhamento_R2_assemble_local[0].split("-")[-1] #region of R2 that aligns with assembly without gaps
     if ((seq_len - len(R2_no_gap))-1) not in interreads:
         return None
 
-    #Vamos pegar as regiões que não se sobrepõem com o assemble e pegar as com qualidade boa.
-    regiao_inicial = assemble_ids[i].letter_annotations["phred_quality"][0:(seq_len - R2_len)] #A região inicial tem que terminar onde o R2 começa
-    regiao_final = assemble_ids[i].letter_annotations["phred_quality"][R1_len:seq_len] #A região final tem que começar onde o R1 termina
-    regiao_meio = assemble_ids[i].letter_annotations["phred_quality"][(seq_len - R2_len):R1_len] #regiao sem gap do R2 é a final
+    #Let's take the regions that don't overlap with the assembly and take the ones with good quality.
+    regiao_inicial = assemble_ids[i].letter_annotations["phred_quality"][0:(seq_len - R2_len)] #The start region has to end where R2 begins
+    regiao_final = assemble_ids[i].letter_annotations["phred_quality"][R1_len:seq_len] #The final region has to start where R1 ends
+    regiao_meio = assemble_ids[i].letter_annotations["phred_quality"][(seq_len - R2_len):R1_len] #R2 gap-free region is the final
     
     try:
         if (min(regiao_inicial) > 20) and (min(regiao_final) > 20) and (mean(regiao_meio) > 30):    
@@ -68,16 +67,16 @@ def ver_qualidade (R1_tamanho_id, R2_tamanho_id ,R1_seqs, R2_seqs, assemble_ids,
 
 from Bio.SeqIO import parse
 
-assemble_ids = list(parse("844-NI-CPesado_assemble-pass.fastq", "fastq")) #Colocar os arquivos de interesse
+assemble_ids = list(parse("844-NI-CPesado_assemble-pass.fastq", "fastq")) #Place the files of interest
 
-R1_ids = list(parse("844-NI-Cpesada_L001_R1_Output.fastq", "fastq")) #Colocar os arquivos de interesse
-R2_ids = list(parse("844-NI-Cpesada_L001_R2_Output.fastq", "fastq")) #Colocar os arquivos de interesse
+R1_ids = list(parse("844-NI-Cpesada_L001_R1_Output.fastq", "fastq")) #Place the files of interest
+R2_ids = list(parse("844-NI-Cpesada_L001_R2_Output.fastq", "fastq")) #Place the files of interest
 
-R1_tamanho_id = [R1_ids[x].id for x in  range (len(R1_ids))] #Pra cada elemento do R1_ids, escreve o id com o número da seq, ele escreve só o ID.
-R1_seqs = [R1_ids[x].seq for x in range (len(R1_ids))] #Pra cada elemento do R1_ids, escreve o id com o número da seq, ele escreve só o ID.
+R1_tamanho_id = [R1_ids[x].id for x in  range (len(R1_ids))] #For each element of R1_ids, write the id with the seq number, it only writes the ID.
+R1_seqs = [R1_ids[x].seq for x in range (len(R1_ids))] #For each element of R1_ids, write the id with the seq number, it only writes the ID.
 
-R2_tamanho_id = [R2_ids[x].id for x in  range (len(R2_ids))] #Pra cada elemento do R2_ids, escreve o id com o número da seq, ele escreve só o ID.
-R2_seqs = [R2_ids[x].seq for x in range (len(R2_ids))] #Pra cada elemento do R2_ids, escreve o id com o número da seq, ele escreve só o ID.
+R2_tamanho_id = [R2_ids[x].id for x in  range (len(R2_ids))] #For each element of R2_ids, write the id with the seq number, it only writes the ID.
+R2_seqs = [R2_ids[x].seq for x in range (len(R2_ids))] #For each element of R2_ids, write the id with the seq number, it only writes the ID.
 
 seq_selecionada = open("seq_selecionada_844_NI.fastq", "a+") 
 
