@@ -115,7 +115,7 @@ direto <- c(
   "IGHV3-1" =	103)
 
 ### Import Brepconvert output file 
-data <- read.csv("resultado_final.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+data <- read.csv("final_result.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 
 #Prepare data
 data$gene <- c(gsub("\\*(.*)", "",data$gene)) ### Keep in the column only the first annotation and delete averythin after *
@@ -144,4 +144,4 @@ for (i in funcional_unique) {
 
 #Saving the results
 library(openxlsx)
-write.table(result_data, "resultado_final_filtrado.csv", sep = "\t", row.names = FALSE)
+write.table(result_data, "final_result_filtered.csv", sep = "\t", row.names = FALSE)
