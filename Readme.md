@@ -15,4 +15,4 @@ There are four files used for sequence analysis and plotting the graphics.
 - Non_b_motifs_analysis.r
 - Gene_conversion_percentage.py
 
-
+For using the files you should have an output table gerated by Brepconvert.
