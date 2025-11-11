@@ -1,6 +1,14 @@
 #Script to prepare data for gene order filter
 
-#Loading needed libraries, if you don't have any of these libraries just use the command install.packages(your_library).
+#Loading needed libraries, if you already have these libraries intalled you can just coment these lines with #.
+install.packages("Biostrings")
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("parallel")
+install.packages("psych")
+install.packages("ggplot2")
+install.packages("tidyverse")
+
 library(Biostrings)
 library(dplyr)
 library("plyr")
@@ -35,7 +43,7 @@ dataset <- dataset[!(dataset$Sequence.ID == "" | is.na(dataset$Sequence.ID)), ]
 datasetcont <- nrow(dataset[dataset == '',])
 
 # Reading result file from Brepconvert
-resultado1 <- read.csv("result.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
+resultado1 <- read.csv("Input_test_Horse_Gene_Conversion.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
 
 # Making sure that the size of the event has the minimum size of three.
 filtro <- nchar(resultado1$seq_event) >= 3
