@@ -2,6 +2,7 @@ from Bio.SeqIO import parse, write
 from Bio import pairwise2
 from statistics import mean
 import sys
+import os
 from io import TextIOWrapper
 
 
