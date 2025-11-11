@@ -1,6 +1,12 @@
 # Result analysis from Non Beta motifs search tool
 
-# Loading needed libraries, if you don't have any of these libraries just use the command install.packages(your_library).
+# Loading needed libraries, if you already have these libraries you can just comment these lines with #.
+install.packages("data.table")
+install.packages("ggplot2")
+install.packages("data.table")
+install.packages("dplyr")
+install.packages("ggnewscale")
+
 library(data.table)
 library(ggplot2)
 library(data.table)
@@ -9,13 +15,16 @@ library(ggnewscale)
 
 #Couting and plotting the repetitions of Direct Repeats motifs.
 # Loading Direct repeat result file
-DR <- read.csv("687514b02f75d_DR.tsv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+DR <- read.csv("Direct_Repeats_motifs.tsv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+
 # Load your gene conversion results from Brepconvert
 data1 <- read.csv("final_result_filtered.cs.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 df_filtered_selecionado <- as.data.table(data1)
+
 # Use data.table to filter and clean the Sequence column
 DR_filtered <- as.data.table(DR)
 DR_filtered[, Sequence := trimws(sub(".*seq\\s*", "", Sequence))]
+
 # Initialize results list with a maximum size
 results <- vector("list", nrow(DR_filtered) * nrow(df_filtered_selecionado))
 result_index <- 1
