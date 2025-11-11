@@ -5,6 +5,18 @@ import sys
 import os
 from io import TextIOWrapper
 
+# --- NOVO: SUPORTE A ARGUMENTOS DA LINHA DE COMANDO ---
+# Permite passar caminhos absolutos para os três arquivos via terminal
+# Exemplo: python Phred_Score_Filter.py /path/to/assemble-pass_test.fastq /path/to/R1_test.fastq /path/to/R2_test.fastq
+if len(sys.argv) == 4:
+    assembled_file = sys.argv[1]  # Caminho para assemble-pass_test.fastq
+    R1_file = sys.argv[2]         # Caminho para R1_test.fastq
+    R2_file = sys.argv[3]         # Caminho para R2_test.fastq
+else:
+    # Fallback para caminhos relativos (se rodar sem argumentos)
+    assembled_file = "assemble-pass_test.fastq"
+    R1_file = "R1_test.fastq"
+    R2_file = "R2_test.fastq"
 
 def check_read_quality(assembled_read, R1_ids_list, R2_ids_list, R1_seqs, R2_seqs, output_file: TextIOWrapper):
     """
@@ -142,12 +154,12 @@ def check_read_quality(assembled_read, R1_ids_list, R2_ids_list, R1_seqs, R2_seq
 # --- MAIN SCRIPT EXECUTION ---
 
 # List of assembled sequences (SeqRecord objects from the assembled FASTQ file)
-assembled_seqs = list(parse("assemble-pass_test.fastq", "fastq")) 
+assembled_seqs = list(parse(assembled_file, "fastq")) 
 
 # List of R1 sequences
-R1_reads = list(parse("R1_test.fastq", "fastq")) 
+R1_reads = list(parse(R1_file, "fastq")) 
 # List of R2 sequences
-R2_reads = list(parse("R2_test.fastq", "fastq")) 
+R2_reads = list(parse(R2_file, "fastq")) 
 
 # Extracting ID and Sequence lists for quick lookup (as done in original script)
 R1_ids_list = [read.id for read in R1_reads]
