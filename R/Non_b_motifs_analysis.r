@@ -1,4 +1,5 @@
 # Result analysis from Non Beta motifs search tool
+# The tool is available at this link: https://nonb-abcc.ncifcrf.gov/apps/nBMST/default/
 
 # Loading needed libraries, if you already have these libraries you can just comment these lines with #.
 install.packages("data.table")
