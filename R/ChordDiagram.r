@@ -1,10 +1,11 @@
 # How to make a Chord Diagram related to the frequency of gene conversion events.
 # The code was adapted to the Horse IGHV functional and pseudogenes, if necessary just change the names of the genes.
 
-#Load necessary libraries
+#Load necessary libraries, if you already have these libraries installed you can just comment with #.
 
-#install.packages("circlize")
-#install.packages("dplyr")
+install.packages("circlize")
+install.packages("dplyr")
+
 library(circlize)
 library(dplyr)
 
@@ -14,7 +15,7 @@ data <- df_combined_circus %>% select(gene, V.GENE.and.allele)
 # Create a frequency table with the combination of the columns geneand V.GENE.and.allele
 freq_table <- table(data$gene, data$V.GENE.and.allele)
 
-# Defining gene names and colors
+# Defining gene names and colors, note that you have to change the IGHV gene names depending on the genes you have on you dataset.
 genes_cores <- c("IGHV(II)-43" = "blue", "IGHV1-31" = "red", "IGHV1-79" = "green", "IGHV3-24" = "orange",
                  "IGHV3-26" = "yellow", "IGHV3-32" = "purple", "IGHV3-36" = "cyan", "IGHV3-39" = "magenta",
                  "IGHV3-40" = "brown", "IGHV4-20N" = "darkgreen", "IGHV4-23" = "darkblue", "IGHV4-25" = "darkred",
