@@ -1,6 +1,14 @@
 # Code for data analysis from gene order filter
 
-# Loading needed libraries, if you don't have any of these libraries just use the command install.packages(your_library).
+# Loading needed libraries, if already have these libraries you can just comment these lines with #.
+install.packages("Biostrings")
+install.packages("dplyr")
+install.packages("plyr")
+install.packages("parallel")
+install.packages("psych")
+install.packages("ggplot2")
+install.packages("tidyverse")
+
 library(Biostrings)
 library(dplyr)
 library("plyr")
