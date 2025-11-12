@@ -10,7 +10,7 @@ install.packages("ggplot2")
 install.packages("tidyverse")
 install.packages("openxlsx") # Required for saving results
 
-library(Biostrings)
+#library(Biostrings)
 library(dplyr)
 library("plyr")
 library(parallel)
