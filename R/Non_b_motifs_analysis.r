@@ -35,7 +35,7 @@ if (length(args) > 0) {
 # 3. FILE PATH DEFINITION
 # -------------------------------------------------------------
 DR_FILE <- file.path(DATA_DIR, "Direct_Repeats_motifs.tsv")
-DATA1_FILE <- file.path(DATA_DIR, "final_result_filtered.cs.csv")
+DATA1_FILE <- file.path(DATA_DIR, "final_result_filtered.csv")
 
 # -------------------------------------------------------------
 # 4. MAIN ANALYSIS LOGIC
@@ -54,7 +54,7 @@ df_filtered_selecionado <- as.data.table(data1)
 DR <- read.csv("Direct_Repeats_motifs.tsv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 
 # Load your gene conversion results from Brepconvert
-data1 <- read.csv("final_result_filtered.cs.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+data1 <- read.csv("final_result_filtered.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 df_filtered_selecionado <- as.data.table(data1)
 
 # Use data.table to filter and clean the Sequence column
@@ -108,7 +108,7 @@ write.csv(results_dt_DR_unique, "results_dt_DR_unique.csv", row.names = FALSE)
 
 
 #Ploting the results
-DR_unique <- read.csv("results_dt_DR_unique_SeqID.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
+DR_unique <- read.csv("results_dt_DR_unique.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
 # Convert results_dt_IR to data.frame
 DR_unique <- as.data.frame(results_dt_DR_unique)
 # Prepare both datasets
@@ -120,7 +120,7 @@ gc_data <- data1 %>%
 # Calculate frequency for Gene Conversion events
 gc_data_freq <- gc_data %>%
   group_by(start, end) %>%
-  summarise(frequency = n(), .groups = 'drop') %>%
+  summarise(frequency = n(), .groups = 'drop') %>% # Usamos n() normalmente aqui
   mutate(source = "Gene Conversion")
 
 # Calculate frequency for Direct Repeats and Slipped Motifs
@@ -176,4 +176,3 @@ ggplot(combined_data, aes(x = start, y = end, size = frequency, color = source))
     limits = c(0, max(all_ends, na.rm = TRUE) + 25),
     breaks = seq(0, max(all_ends, na.rm = TRUE), by = 25)
   )
-
