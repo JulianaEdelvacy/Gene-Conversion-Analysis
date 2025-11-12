@@ -21,14 +21,14 @@ Note: Example input files for testing the workflow are available in the test_fil
 
 The analysis is divided into three functional stages. The R scripts can be executed via the command line or using Rstudio.
 
-1. Optional: Sequence Filtering Scripts (Python)
+### 1. Optional: Sequence Filtering Scripts (Python)
 
 
 | File  | Description |
 | ------------- | ------------- |
 | Python/Phred_Score_Filter.py  | Filters input FASTQ sequences based on Phred quality scores prior to Brepconvert annotation. |
 
-2. Core Data Treatment (Mandatory Order)
+### 2. Core Data Treatment (Mandatory Order)
 These files must be executed in sequence to ensure proper data cleaning, filtering, and preparation.
 
 | File  | Description |
@@ -37,21 +37,21 @@ These files must be executed in sequence to ensure proper data cleaning, filteri
 | R/2-Gene_Order_Filter.ry  | Applies the gene order filter, retaining only pseudogenes that are before a functional gene. Primary output: final_result_filtered.csv. |
 | R/3-Data_analysis.r  | Performs analysis of filtered data characteristics. |
 
-3. Visualization and Plotting Scripts
+### 3. Visualization and Plotting Scripts
 
 | File  | Description |
 | ------------- | ------------- |
 | R/ChordDiagram.r  | Generates a Chord Diagram visualizing the donor-acceptor relationships of the gene conversion events. |
 | R/Non_b_motifs_analysis.r  | Generates a scatter plot comparing the position of GC events against Non-B motifs. |
 
-🚀 Usage Workflow
+## 🚀 Usage Workflow
 
 First, clone the repository using the following command:
 
 ```
 git clone https://github.com/JulianaEdelvacy/Gene-Conversion-Analysis
 ```
-Step 1: Core Data Treatment (Rscript)
+### Step 1: Core Data Treatment (Rscript)
 
 Assuming your input files (Brepconvert output, IMGT sequences, etc.) are located in a directory named test_files.
 
@@ -70,7 +70,7 @@ Rscript R/3-Data_analysis.r .
 
 ```
 
-Step 2: Visualization and Plotting
+### Step 2: Visualization and Plotting
 
 ```
 # Generate the Chord Diagram (Outputs Rplots.pdf)
