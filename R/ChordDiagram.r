@@ -2,7 +2,18 @@
 # This code was adapted for Horse IGHV functional and pseudogenes. You should change the gene names as necessary for your dataset.
 
 # -------------------------------------------------------------
-# 1. READ DATA DIRECTORY PATH FROM COMMAND-LINE ARGUMENT
+# 1. LIBRARY LOADING
+# -------------------------------------------------------------
+
+# Load necessary libraries. If you already have these libraries installed, you can just comment with #.
+install.packages("circlize")
+install.packages("dplyr")
+
+library(circlize)
+library(dplyr)
+
+# -------------------------------------------------------------
+# 2. READ DATA DIRECTORY PATH FROM COMMAND-LINE ARGUMENT
 # -------------------------------------------------------------
 args <- commandArgs(trailingOnly = TRUE)
 DATA_DIR <- "." # Default to current directory
@@ -15,20 +26,9 @@ if (length(args) > 0) {
 }
 
 # -------------------------------------------------------------
-# 2. FILE PATH DEFINITION
+# 3. FILE PATH DEFINITION
 # -------------------------------------------------------------
 INPUT_FILE <- file.path(DATA_DIR, "final_result_filtered.csv")
-
-# -------------------------------------------------------------
-# 3. LIBRARY LOADING
-# -------------------------------------------------------------
-
-# Load necessary libraries. If you already have these libraries installed, you can just comment with #.
-install.packages("circlize")
-install.packages("dplyr")
-
-library(circlize)
-library(dplyr)
 
 # -------------------------------------------------------------
 # 4. MAIN LOGIC
