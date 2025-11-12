@@ -8,7 +8,12 @@
 # Get the pseudogene and check if it's present in the dictionary; if it is, store its value.
 
 # -------------------------------------------------------------
-# 1. READ DATA DIRECTORY PATH FROM COMMAND-LINE ARGUMENT
+# 1. LIBRARY LOADING
+# -------------------------------------------------------------
+library(openxlsx) 
+
+# -------------------------------------------------------------
+# 2. READ DATA DIRECTORY PATH FROM COMMAND-LINE ARGUMENT
 # -------------------------------------------------------------
 args <- commandArgs(trailingOnly = TRUE)
 DATA_DIR <- "." # Default to current directory
@@ -21,15 +26,10 @@ if (length(args) > 0) {
 }
 
 # -------------------------------------------------------------
-# 2. FILE PATH DEFINITIONS
+# 3. FILE PATH DEFINITIONS
 # -------------------------------------------------------------
 INPUT_FILE <- file.path(DATA_DIR, "final_result.csv")
 OUTPUT_FILE <- "final_result_filtered.csv" # Output written to the script's execution directory
-
-# -------------------------------------------------------------
-# 3. LIBRARY LOADING
-# -------------------------------------------------------------
-library(openxlsx) 
 
 # -------------------------------------------------------------
 # 4. HORSE IMGT GENE ORDER DICTIONARY (direto)
