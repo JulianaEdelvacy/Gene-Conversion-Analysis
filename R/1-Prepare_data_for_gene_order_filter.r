@@ -1,18 +1,14 @@
 # Script to prepare data for gene order filter (Updated to use command-line arguments)
 
 # Loading needed libraries. If you already have these libraries installed, you can just comment these lines with #.
-#install.packages("Biostrings")
 install.packages("dplyr")
-#install.packages("plyr")
 install.packages("parallel")
 install.packages("psych")
 install.packages("ggplot2")
 install.packages("tidyverse")
 install.packages("openxlsx") # Required for saving results
 
-#library(Biostrings)
 library(dplyr)
-#library("plyr")
 library(parallel)
 library(psych)
 library(ggplot2)
@@ -48,7 +44,7 @@ OUTPUT_FILE <- "final_result.csv" # The output file will be written to the scrip
 ### Importing IMGT annotation table 
 dataset <- read.csv(
   IMGT_ANNOTATION_FILE, 
-  sep = "\t", 
+  sep = ",", 
   stringsAsFactors = FALSE, 
   header = TRUE
 )
