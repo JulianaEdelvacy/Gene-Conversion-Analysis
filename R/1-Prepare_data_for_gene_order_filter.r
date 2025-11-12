@@ -1,7 +1,7 @@
 # Script to prepare data for gene order filter (Updated to use command-line arguments)
 
 # Loading needed libraries. If you already have these libraries installed, you can just comment these lines with #.
-install.packages("Biostrings")
+#install.packages("Biostrings")
 install.packages("dplyr")
 install.packages("plyr")
 install.packages("parallel")
