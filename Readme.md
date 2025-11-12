@@ -85,6 +85,12 @@ Rscript R/Non_b_motifs_analysis.r test_files
 ```
 <img width="2400" height="1800" alt="Motifs_Scatter_Plot" src="https://github.com/user-attachments/assets/426a74ec-1ca9-4bb0-888a-f10198afedc9" />
 
+## Plug and play
+
+You can also run the example analysis via the Colab notebook:
+
+https://colab.research.google.com/drive/1J9MIe4Jn6FCuTtPWemVGX3CEdEhVExLT?usp=sharing
+
 
 
 
