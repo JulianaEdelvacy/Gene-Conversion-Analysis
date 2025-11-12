@@ -7,14 +7,12 @@
 
 # Loading needed libraries. If you already have these libraries installed, you can just comment these lines with #.
 install.packages("data.table")
-install.packages("ggplot2")
-install.packages("data.table")
-install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("dplyr")
 install.packages("ggnewscale")
 
 library(data.table)
 library(ggplot2)
-library(data.table)
 library(dplyr)
 library(ggnewscale)
 
@@ -36,24 +34,19 @@ if (length(args) > 0) {
 # -------------------------------------------------------------
 DR_FILE <- file.path(DATA_DIR, "Direct_Repeats_motifs.tsv")
 DATA1_FILE <- file.path(DATA_DIR, "final_result_filtered.csv")
+# Caminhos para arquivos intermediários e finais (dentro da pasta de dados)
+RESULTS_CSV <- file.path(DATA_DIR, "results_dt_DR_unique.csv")
+PLOT_OUTPUT_FILE <- file.path(DATA_DIR, "Motifs_Scatter_Plot.png")
 
 # -------------------------------------------------------------
 # 4. MAIN ANALYSIS LOGIC
 # -------------------------------------------------------------
 
 # Counting and plotting the repetitions of Direct Repeats motifs.
-# Loading Direct repeat result file
+# Loading Direct repeat result file - USANDO O DR_FILE CORRETO
 DR <- read.csv(DR_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 
-# Load your gene conversion results from Brepconvert
-data1 <- read.csv(DATA1_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
-df_filtered_selecionado <- as.data.table(data1)
-
-#Couting and plotting the repetitions of Direct Repeats motifs.
-# Loading Direct repeat result file
-DR <- read.csv(DR_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
-
-# Load your gene conversion results from Brepconvert
+# Load your gene conversion results from Brepconvert - USANDO O DATA1_FILE CORRETO
 data1 <- read.csv(DATA1_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 df_filtered_selecionado <- as.data.table(data1)
 
@@ -65,14 +58,14 @@ DR_filtered[, Sequence := trimws(sub(".*seq\\s*", "", Sequence))]
 results <- vector("list", nrow(DR_filtered) * nrow(df_filtered_selecionado))
 result_index <- 1
 
-# Iterate over the IR sequences
-for (ir_seq in DR_filtered$Sequence) {
-  # Find all rows in df_combined_case where IR sequence is substring in V.REGION
-  matches_dt <- df_filtered_selecionado[grepl(ir_seq, V.REGION)]
+# Iterate over the DR sequences
+for (dr_seq in DR_filtered$Sequence) {
+  # Find all rows in df_filtered_selecionado where DR sequence is substring in V.REGION
+  matches_dt <- df_filtered_selecionado[grepl(dr_seq, V.REGION)]
   
   if (nrow(matches_dt) > 0) {
-    # For each matched row, find start and end positions of IR sequence inside the V.REGION sequence
-    start_positions <- regexpr(ir_seq, matches_dt$V.REGION)
+    # For each matched row, find start and end positions of DR sequence inside the V.REGION sequence
+    start_positions <- regexpr(dr_seq, matches_dt$V.REGION)
     
     # Filter out non-matching sequences
     valid_matches <- start_positions != -1
@@ -80,13 +73,13 @@ for (ir_seq in DR_filtered$Sequence) {
     if (any(valid_matches)) {
       # Calculate start and end positions for valid matches
       start_pos <- start_positions[valid_matches]
-      end_pos <- start_pos + nchar(ir_seq) - 1
+      end_pos <- start_pos + nchar(dr_seq) - 1
       
       # Append to results list
       for (row_index in which(valid_matches)) {
         results[[result_index]] <- list(
           SeqID = matches_dt$Sequence.ID[row_index],
-          Sequence = ir_seq,
+          Sequence = dr_seq,
           Start = start_pos[row_index],
           End = end_pos[row_index]
         )
@@ -99,27 +92,33 @@ for (ir_seq in DR_filtered$Sequence) {
 # Trim the results list to the actual size
 results <- results[1:(result_index - 1)]
 # Combine results into a data.table
-# Remove single column
 results_dt_DR <- rbindlist(results)
 results_dt_DR_unique <- unique(results_dt_DR)
 results_dt_DR_unique <- results_dt_DR_unique[!is.na(Sequence) & Sequence != "", ]
-# Save end_counts as a CSV file
-write.csv(results_dt_DR_unique, "results_dt_DR_unique.csv", row.names = FALSE)
 
-#Ploting the results
-DR_unique <- read.csv("results_dt_DR_unique.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
-# Convert results_dt_IR to data.frame
-DR_unique <- as.data.frame(results_dt_DR_unique)
+# Save end_counts as a CSV file - USANDO O CAMINHO CORRETO
+write.csv(results_dt_DR_unique, RESULTS_CSV, row.names = FALSE)
+
+
+# Ploting the results
+# Carrega o CSV que acabou de ser salvo (do caminho correto)
+DR_unique <- read.csv(RESULTS_CSV, sep = ",", stringsAsFactors = FALSE, header = TRUE)
+
+# Convert results_dt_DR_unique to data.frame
+DR_unique <- as.data.frame(DR_unique)
+
 # Prepare both datasets
 ir_data <- DR_unique %>%
   mutate(source = "Direct Repeats and Slipped Motifs")
+
+# A variável 'data1' já foi carregada no início
 gc_data <- data1 %>%
   mutate(source = "Gene Conversion")
 
 # Calculate frequency for Gene Conversion events
 gc_data_freq <- gc_data %>%
   group_by(start, end) %>%
-  summarise(frequency = n(), .groups = 'drop') %>% # Usamos n() normalmente aqui
+  summarise(frequency = n(), .groups = 'drop') %>% 
   mutate(source = "Gene Conversion")
 
 # Calculate frequency for Direct Repeats and Slipped Motifs
@@ -140,7 +139,7 @@ combined_data <- rbind(
   mutate(ir_data_freq, source = "Direct Repeats and Slipped Motifs")
 )
 
-ggplot(combined_data, aes(x = start, y = end, size = frequency, color = source)) +
+plot <- ggplot(combined_data, aes(x = start, y = end, size = frequency, color = source)) +
   # Points with size representing frequency and color representing source
   geom_point(alpha = 0.8) +
   
@@ -151,10 +150,11 @@ ggplot(combined_data, aes(x = start, y = end, size = frequency, color = source))
   
   scale_size_continuous(range = c(2, 10),
                         breaks = seq(1, 15001, by = 2500),
-                        name = "Frequency") +  # Adjust size range as needed
+                        name = "Frequency") + # Adjust size range as needed
   
   labs(x = "Initial Position",
-       y = "Final Position") +
+       y = "Final Position",
+       title = "Analysis of Gene Conversion vs. Direct Repeats Motifs") + # Adicionei um título
   
   theme_bw() +
   theme(
@@ -175,3 +175,12 @@ ggplot(combined_data, aes(x = start, y = end, size = frequency, color = source))
     limits = c(0, max(all_ends, na.rm = TRUE) + 25),
     breaks = seq(0, max(all_ends, na.rm = TRUE), by = 25)
   )
+
+# -------------------------------------------------------------
+# 5. SAVE PLOT TO PNG FILE
+# -------------------------------------------------------------
+
+# Salva o gráfico gerado ('plot') como PNG no caminho correto
+ggsave(PLOT_OUTPUT_FILE, plot = plot, width = 8, height = 6, units = "in", dpi = 300)
+
+cat(paste("Plot saved successfully to:", PLOT_OUTPUT_FILE, "\n"))
