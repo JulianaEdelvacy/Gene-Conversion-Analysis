@@ -62,7 +62,7 @@ chordDiagram(freq_table, grid.col = genes_cores, annotationTrack = "grid", preAl
 circos.track(track.index = 1, panel.fun = function(x, y) {
   gene_name <- CELL_META$sector.index
   # Defining the size
-  font_size <- 0.8
+  font_size <- 0.5
   
   # Increasing the font size for a few genes of interest
   #if (gene_name %in% c("IGHV4-21", "IGHV4-22", "IGHV4-29", "IGHV4-35", "IGHV4-53")) {
