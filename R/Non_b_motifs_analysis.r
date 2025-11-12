@@ -1,7 +1,11 @@
 # Result analysis from Non Beta motifs search tool
 # The tool is available at this link: https://nonb-abcc.ncifcrf.gov/apps/nBMST/default/
 
-# Loading needed libraries, if you already have these libraries you can just comment these lines with #.
+# -------------------------------------------------------------
+# 1. LIBRARY LOADING
+# -------------------------------------------------------------
+
+# Loading needed libraries. If you already have these libraries installed, you can just comment these lines with #.
 install.packages("data.table")
 install.packages("ggplot2")
 install.packages("data.table")
@@ -13,6 +17,37 @@ library(ggplot2)
 library(data.table)
 library(dplyr)
 library(ggnewscale)
+
+# -------------------------------------------------------------
+# 2. READ DATA DIRECTORY PATH FROM COMMAND-LINE ARGUMENT
+# -------------------------------------------------------------
+args <- commandArgs(trailingOnly = TRUE)
+DATA_DIR <- "." # Default to current directory
+
+if (length(args) > 0) {
+  DATA_DIR <- args[1]
+  cat(paste("Using data directory:", DATA_DIR, "\n"))
+} else {
+  cat("No data path provided. Using current directory (./). Ensure input files are here.\n")
+}
+
+# -------------------------------------------------------------
+# 3. FILE PATH DEFINITION
+# -------------------------------------------------------------
+DR_FILE <- file.path(DATA_DIR, "Direct_Repeats_motifs.tsv")
+DATA1_FILE <- file.path(DATA_DIR, "final_result_filtered.cs.csv")
+
+# -------------------------------------------------------------
+# 4. MAIN ANALYSIS LOGIC
+# -------------------------------------------------------------
+
+# Counting and plotting the repetitions of Direct Repeats motifs.
+# Loading Direct repeat result file
+DR <- read.csv(DR_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+
+# Load your gene conversion results from Brepconvert
+data1 <- read.csv(DATA1_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+df_filtered_selecionado <- as.data.table(data1)
 
 #Couting and plotting the repetitions of Direct Repeats motifs.
 # Loading Direct repeat result file
