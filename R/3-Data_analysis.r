@@ -49,9 +49,13 @@ data1 <- read.csv(INPUT_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRU
 
 # Counting the repetitions from each column
 cat("\n--- Repetitions per Column ---\n")
+cat("\n--- distance_to_AID_motif ---\n")
 table(data1$distance_to_AID_motif)
+cat("\n--- Functional gene ---\n")
 table(data1$V.GENE.and.allele)
+cat("\n--- edit_distance ---\n")
 table(data1$edit_distance)
+cat("\n--- nearest_AID_motif ---\n")
 table(data1$nearest_AID_motif)
 
 # Seeing the most repeated pseudogenes
@@ -62,7 +66,7 @@ repetitions_P <- sort(repetitions_P, decreasing = TRUE)
 
 # Printing the names and repetitions
 for (name in names(repetitions_P)) {
-  print(paste(name, repetitions_P[name]))
+  print(paste(name, repetitions_P[name]))
 }
 
 # Seeing the most repeated functional genes
@@ -73,12 +77,12 @@ repetitions_F <- sort(repetitions_F, decreasing = TRUE)
 
 # Printing the names and repetitions
 for (name in names(repetitions_F)) {
-  print(paste(name, repetitions_F[name]))
+  print(paste(name, repetitions_F[name]))
 }
 
 # Counting seq_event repetitions
 # Calculating the size (length) of seq_event
-seq_event_size = nchar(seq_event)
+seq_event_size = nchar(data1$seq_event)
 
 # Counting Seq_event size repetitions
 cat("\n--- Seq_event Size Repetitions ---\n")
