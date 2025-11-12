@@ -5,13 +5,13 @@
 # -------------------------------------------------------------
 
 # Loading needed libraries. If you already have these libraries installed, you can just comment these lines with #.
-install.packages("Biostrings")
-install.packages("dplyr")
-install.packages("plyr")
-install.packages("parallel")
-install.packages("psych")
-install.packages("ggplot2")
-install.packages("tidyverse")
+# install.packages("Biostrings")
+# install.packages("dplyr")
+# install.packages("plyr")
+# install.packages("parallel")
+# install.packages("psych")
+# install.packages("ggplot2")
+# install.packages("tidyverse")
 
 library(Biostrings)
 library(dplyr)
