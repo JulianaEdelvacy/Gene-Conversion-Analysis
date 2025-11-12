@@ -13,7 +13,7 @@
 # install.packages("ggplot2")
 # install.packages("tidyverse")
 
-library(Biostrings)
+#library(Biostrings)
 library(dplyr)
 library("plyr")
 library(parallel)
