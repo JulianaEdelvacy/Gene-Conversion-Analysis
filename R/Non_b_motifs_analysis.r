@@ -51,10 +51,10 @@ df_filtered_selecionado <- as.data.table(data1)
 
 #Couting and plotting the repetitions of Direct Repeats motifs.
 # Loading Direct repeat result file
-DR <- read.csv("Direct_Repeats_motifs.tsv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+DR <- read.csv(DR_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 
 # Load your gene conversion results from Brepconvert
-data1 <- read.csv("final_result_filtered.csv", sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+data1 <- read.csv(DATA1_FILE, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 df_filtered_selecionado <- as.data.table(data1)
 
 # Use data.table to filter and clean the Sequence column
@@ -105,7 +105,6 @@ results_dt_DR_unique <- unique(results_dt_DR)
 results_dt_DR_unique <- results_dt_DR_unique[!is.na(Sequence) & Sequence != "", ]
 # Save end_counts as a CSV file
 write.csv(results_dt_DR_unique, "results_dt_DR_unique.csv", row.names = FALSE)
-
 
 #Ploting the results
 DR_unique <- read.csv("results_dt_DR_unique.csv", sep = ",", stringsAsFactors = FALSE, header = TRUE)
