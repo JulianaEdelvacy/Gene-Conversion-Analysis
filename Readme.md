@@ -23,7 +23,6 @@ The analysis is divided into three functional stages. The R scripts can be execu
 
 ### 1. Optional: Sequence Filtering Scripts (Python)
 
-
 | File  | Description |
 | ------------- | ------------- |
 | Python/Phred_Score_Filter.py  | Filters input FASTQ sequences based on Phred quality scores prior to Brepconvert annotation. |
@@ -51,9 +50,20 @@ First, clone the repository using the following command:
 ```
 git clone https://github.com/JulianaEdelvacy/Gene-Conversion-Analysis
 ```
-### Step 1: Core Data Treatment (Rscript)
+### Step 1: Sequence Filtering (Optional)
 
 Assuming your input files (Brepconvert output, IMGT sequences, etc.) are located in a directory named test_files.
+From the paste Gene-Conversion-Analysis-main run:
+
+```
+python3 Python/Phred_Score_Filter.py ./test_files/assemble-pass_test.fastq ./test_files/R1_test.fastq ./test_files/R2_test.fastq
+
+```
+
+### Step 2: Core Data Treatment (Rscript)
+
+Assuming your input files (Brepconvert output, IMGT sequences, etc.) are located in a directory named test_files.
+From the paste Gene-Conversion-Analysis-main run:
 
 ```
 # The first argument specifies the directory containing the input files.
@@ -70,7 +80,9 @@ Rscript R/3-Data_analysis.r .
 
 ```
 
-### Step 2: Visualization and Plotting
+### Step 3: Visualization and Plotting
+
+Using the output 'final_result_filtered.csv' we can generate a Chord Diagram running:
 
 ```
 # Generate the Chord Diagram (Outputs Rplots.pdf)
